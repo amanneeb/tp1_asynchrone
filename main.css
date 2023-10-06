@@ -1,0 +1,54 @@
+#liste ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#liste li {
+    min-width: 100px;
+    width: calc(25% - (52px));
+}
+
+#liste button {
+    appearance: none;
+    width: 100%;
+    border: none;
+    background: rgb(106, 150, 205);
+    padding: 0;
+    margin: 0;
+    display: flex;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#liste button:hover img,
+#liste button:focus img {
+    opacity: 0.6;
+}
+
+#liste img {
+    transition: opacity 0.3s ease;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: block;
+}
+
+#fiche {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgb(215, 215, 215);
+}
+
+#fiche h2 {
+    margin: 0;
+}
+
+#fiche img {
+    max-width: 200px;
+    border-radius: 8px;
+}
