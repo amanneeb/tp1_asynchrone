@@ -1,28 +1,45 @@
+/**
+ * @file "Programmation spécialisée - TP1 - Visionneuse"
+ * @author Anaïs Mannée-Batschy 
+ * @version 0.0.1
+ *  
+ */
 const arrFilmsStarWars = [];
 const arrPlanetesJSON = [];
 const tableauPlanetes =[];
 const refImage = document.querySelector("img");
 const refLegende = document.querySelector("figcaption");
+const refBtnArreterActiver = document.querySelector(".btn_visio");
 let idBtnFilmChoisi;
 let intPlaneteAafficher;
 let vitesseAffichage;
 let apiImage
 
 
+/**
+ * Recupérer la liste des films sur l'API
+ */
 function recupererLesFilms(){
     fetch("https://swapi.dev/api/films/")
     .then(reponse => reponse.json())
     .then(films => creerTableauFilms(films));
 }
 
+/**
+ * Créer un tableau des films à partir de la liste récupérer sur l'API
+ * @param {object} films 
+ */
 function creerTableauFilms(films){
     films.results.forEach(element => {
         arrFilmsStarWars.push(element.title);
     });
     afficherListeFilms(films);
-    console.log(films)
 }
 
+/**
+ * Afficher trois films parmi les films présents dans la liste
+ * @param {object} films 
+ */
 function afficherListeFilms(films){
     objson = films;   
 
@@ -40,15 +57,18 @@ function afficherListeFilms(films){
         arrFilmsStarWars.splice(intIndexFilmChoisi, 1);
         refUl.append(elementLI);
     }
-    console.log(tableauPlanetes)
 }
 
+/**
+ * Dévoiler la visionneuse et choisir l'image initiale
+ * @param {event} event 
+ */
 function afficherVisionneuse(event){    
     if(event.target.tagName === "BUTTON" && event.target.parentNode.parentNode.tagName === "UL"){
+        document.getElementById("Visionneuse").removeAttribute("hidden")
         idBtnFilmChoisi = parseInt(event.target.id-1);
         intPlaneteAafficher = 0;
         let lienImg = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher];
-        console.table(tableauPlanetes[idBtnFilmChoisi]);
         let indexPlanetes = lienImg.replace("https://swapi.dev/api/planets/", "");
         indexPlanetes= indexPlanetes.replace("/", "");
         apiImage=indexPlanetes;
@@ -56,28 +76,38 @@ function afficherVisionneuse(event){
     }
 }
 
+/**
+ * Récupérer la liste des planètes sur l'API
+ */
 function recupererLesPlanetes(){
     fetch("https://swapi.dev/api/planets/")
     .then(reponse => reponse.json())
     .then(planetes => afficherPlanetes(planetes))
 }
 
+/**
+ * Créer un tableau contenant le nom des planètes
+ * @param {object} planets 
+ */
 function afficherPlanetes(planets){
     const objPlanetes = planets;
     if(arrPlanetesJSON.length===0){
         for(let intP=0; intP<planets.results.length-1; intP++){
             arrPlanetesJSON.push(planets.results[intP].name.toLowerCase());
         }
-        console.log(arrPlanetesJSON)
     }
     let nomPlanete = objPlanetes.results[apiImage-1]["name"].toLowerCase();
     faireDefilerImage(nomPlanete)
-    console.log(objPlanetes.results[apiImage-1]["name"]);
 }
 
+/**
+ * Afficher les images des planètes dans la visionneuse
+ * @param {string} nomPlanete 
+ */
 function faireDefilerImage(nomPlanete){
-    console.log(nomPlanete)
-    arreterMinuterie();
+    if(refBtnArreterActiver.id==="arreter"){
+        arreterMinuterie();
+    }    
     if(refImage.src="../../images/"+nomPlanete+".jpeg"){
         refImage.src="../../images/"+nomPlanete+".jpeg";
         refLegende.textContent = nomPlanete;
@@ -88,49 +118,61 @@ function faireDefilerImage(nomPlanete){
         }else{
             refImage.src="https://picsum.photos/200";
         }        
+    }
+    if(refBtnArreterActiver.id==="arreter"){
+        activerMinuterie();
     }    
-    activerMinuterie();
 }
 
+/**
+ * Faire apparaitre l'image suivante dans la visionneuse
+ */
 function avancerVisionneuse(){
     if(intPlaneteAafficher<tableauPlanetes[idBtnFilmChoisi].length-1){
         intPlaneteAafficher++;
-        noDeLaPlanete = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher].replace("https://swapi.dev/api/planets/", "");
-        noDeLaPlanete = noDeLaPlanete.replace("/", "");
-        planete = arrPlanetesJSON[noDeLaPlanete-1];
+        planete = extraireIndexPlanete()
         faireDefilerImage(planete);
     }else{
         if(intPlaneteAafficher===tableauPlanetes[idBtnFilmChoisi].length-1){
             intPlaneteAafficher=0;
-            noDeLaPlanete = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher].replace("https://swapi.dev/api/planets/", "");
-            noDeLaPlanete = noDeLaPlanete.replace("/", "");
-            planete = arrPlanetesJSON[noDeLaPlanete-1];
+            planete = extraireIndexPlanete();
             faireDefilerImage(planete);
         }
     }    
 }
 
+/**
+ * Faire apparaitre l'image précédente dans la visionneuse
+ */
 function reculerVisionneuse(){
     if(intPlaneteAafficher>0){
         intPlaneteAafficher--;
-        noDeLaPlanete = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher].replace("https://swapi.dev/api/planets/", "");
-        noDeLaPlanete = noDeLaPlanete.replace("/", "");
-        planete = arrPlanetesJSON[noDeLaPlanete-1];
+        planete = extraireIndexPlanete();
         faireDefilerImage(planete);
     }else{
         if(intPlaneteAafficher===0){
             intPlaneteAafficher=tableauPlanetes[idBtnFilmChoisi].length-1;
-            noDeLaPlanete = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher].replace("https://swapi.dev/api/planets/", "");
-            noDeLaPlanete = noDeLaPlanete.replace("/", "");
-            planete = arrPlanetesJSON[noDeLaPlanete-1];
+            planete = extraireIndexPlanete();
             faireDefilerImage(planete);
         }
     }
 }
 
+/**
+ * Extraire l'index de la planete grâce à son URL
+ * @returns 
+ */
+function extraireIndexPlanete(){
+    noDeLaPlanete = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher].replace("https://swapi.dev/api/planets/", "");
+    noDeLaPlanete = noDeLaPlanete.replace("/", "");
+    planete = arrPlanetesJSON[noDeLaPlanete-1];
+    return planete;
+}
 
+/**
+ * Choisir la vitesse de défilement de la visionneuse
+ */
 function definirVitesseMinuterie(){
-    //console.log(document.getElementById("vitesse").value)
     let vitesseSelectionnee = document.getElementById("vitesse").value;
     switch (vitesseSelectionnee){
         case "lent":
@@ -146,25 +188,31 @@ function definirVitesseMinuterie(){
     }
 }
 
+/**
+ * Arrêter la minuterie de la visionneuse
+ */
 function arreterMinuterie(){
     clearInterval(vitesseAffichage)
 }
 
+/**
+ * Activer la minuterie de la visionneuse
+ */
 function activerMinuterie(){
     definirVitesseMinuterie();
 }
 
+/**
+ * Changer l'identifiant et la valeur du bouton activant/arretant la minuterie de la visionneuse
+ */
 function changerValeursBtnVisio(){
-    console.log(document.querySelector(".btn_visio"))
-    if(document.querySelector(".btn_visio").value==="arreter"){
-        console.log(document.querySelector(".btn_visio").value);
-        document.querySelector(".btn_visio").value="activer";
-        document.querySelector(".btn_visio").id="activer";
+    if(refBtnArreterActiver.value==="arreter"){
+        refBtnArreterActiver.value="activer";
+        refBtnArreterActiver.id="activer";
         arreterMinuterie();
     }else{
-        console.log(document.querySelector(".btn_visio").value);
-        document.querySelector(".btn_visio").value="arreter";
-        document.querySelector(".btn_visio").id="arreter";
+        refBtnArreterActiver.value="arreter";
+        refBtnArreterActiver.id="arreter";
         activerMinuterie();
     }    
 }
@@ -172,8 +220,8 @@ function changerValeursBtnVisio(){
 
 window.addEventListener("load", recupererLesFilms);
 window.addEventListener("click", afficherVisionneuse);
+refBtnArreterActiver.addEventListener("click", changerValeursBtnVisio);
 document.getElementById("suivant").addEventListener("click", avancerVisionneuse);
 document.getElementById("precedent").addEventListener("click", reculerVisionneuse);
 document.getElementById("arreter").addEventListener("click", arreterMinuterie);
-//document.getElementById("activer").addEventListener("click", activerMinuterie);
-document.querySelector(".btn_visio").addEventListener("click", changerValeursBtnVisio);
+
