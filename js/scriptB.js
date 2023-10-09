@@ -63,10 +63,6 @@ function recupererLesPlanetes(refImage){
             afficherPlanetes(JSON);
         })
     })
-
-    fetch("https://swapi.dev/api/planets/")
-    .then(reponse => reponse.json())
-    .then(planetes => afficherPlanetes(planetes))
 }
 
 function afficherPlanetes(planets){
@@ -160,7 +156,6 @@ function activerMinuterie(){
 
 
 window.addEventListener("load", recupererLesFilms);
-//window.addEventListener("load", recupererLesFilms);
 window.addEventListener("click", afficherVisionneuse);
 document.getElementById("suivant").addEventListener("click", avancerVisionneuse);
 document.getElementById("precedent").addEventListener("click", reculerVisionneuse);
