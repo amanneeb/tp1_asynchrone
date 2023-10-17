@@ -38,9 +38,10 @@ function afficherListeAleatoireUtilisateurs(objJSON){
         elementImg.src = element.picture.large;
         elementImg.alt = "Afficher la fiche de "+ prenom;
         elementBtn.setAttribute("data-index-user", intCpt);
-        elementLi.append(elementImg);       
-        listeUL.append(elementBtn);
         elementBtn.append(elementImg);
+        elementLi.append(elementBtn);       
+        listeUL.append(elementLi);
+        
     });
 }
 
