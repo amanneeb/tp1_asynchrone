@@ -57,6 +57,7 @@ function afficherListeFilms(films){
         arrFilmsStarWars.splice(intIndexFilmChoisi, 1);
         refUl.append(elementLI);
     }
+
 }
 
 /**
@@ -74,6 +75,7 @@ function afficherVisionneuse(event){
         apiImage=indexPlanetes;
         recupererLesPlanetes(indexPlanetes)
     }
+
 }
 
 /**
