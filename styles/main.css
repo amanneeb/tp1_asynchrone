@@ -26,17 +26,12 @@ h1{
 }
 
 #liste li {
-    /*min-width: 100px;
-    width: calc(25% - (52px));
-    display: flex;*/
     justify-content: center;
     margin: .5em auto;
     flex: 0 1 45%;
 }
 @media(min-width: 600px){
     #liste li {
-        /*width: 20%;
-        flex: 0 1 20%;*/
         flex: 0 1 30%;
     }
 }
@@ -62,22 +57,10 @@ h1{
     transition: opacity 0.3s ease;
     padding: 0;
     margin: 0;
-    /*max-width: 100%;*/
     display: block;
 }
-@media (min-width: 600px){
-    #liste img {
-        
-    }
-}
-@media (min-width: 600px){
-    #liste img {
-        
-    }
-}
 
-
-#fiche {
+.fiche {
     margin-top: 60px;
     padding-top: 40px;
     border-top: 1px solid rgb(215, 215, 215);
@@ -88,7 +71,7 @@ h1{
     flex-wrap: wrap;
 }
 @media (min-width: 600px){
-    #fiche {
+    .fiche {
         flex-direction: row;
         justify-content: center;
         align-items: flex-start;
@@ -128,4 +111,78 @@ h1{
 }
 
 /* VISIONNEUSE */
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+#listeFilms ul{
+    list-style-type: none;
+}
+@media (min-width: 600px) {
+    #listeFilms ul{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+}
+#listeFilms li{
+    margin: 0 5px;
+}
+#listeFilms button{
+    border: none;
+    padding: 1em 1em;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+}
 
+.visionneuse{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+#visionneuse p{
+    text-align: center;
+}
+#visionneuse div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+#visionneuse div select,
+#visionneuse div input{
+    margin: 0 5px;
+    padding: .8em .8em;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    border: solid 1px black;
+}
+#visionneuse figure{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 100%;
+}
+@media (min-width: 600px) {
+    #visionneuse figure{
+        width: 600px;
+    }
+}
+#visionneuse img{
+    display: block;
+    max-width: 100%;
+}
+#visionneuse figcaption{
+    display: block;
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 1.2em;
+}

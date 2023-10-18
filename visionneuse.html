@@ -10,7 +10,7 @@
         <header>
             <h1>Visionneuse</h1>
         </header>
-        <main>
+        <main class="main">
             <section id="listeFilms">
                 <p><i>*Dans quelques secondes, trois films vont apparaitre.</i></p>
                 <ul>
@@ -18,20 +18,23 @@
                 </ul>
 
             </section>
-            <section id="Visionneuse" hidden>
+            <section id="visionneuse" hidden>
+                <p>Film choisi: </p>
+                <div>
+                    <select id="vitesse">
+                        <option value="lent">Lent</option>
+                        <option value="moyen">Moyen</option>
+                        <option value="rapide">Rapide</option>
+                    </select>
+                    <input type="button" id="precedent" value="precedent">
+                    <input class="btn_visio" type="button" id="arreter" value="arreter">
+                    <input type="button" id="suivant" value="suivant">
+                </div>
+                
                 <figure>
-                    <img src="" alt="" width="500px">
+                    <img src="" alt="" >
                     <figcaption></figcaption>
                 </figure>
-
-                <select id="vitesse">
-                    <option value="lent">Lent</option>
-                    <option value="moyen">Moyen</option>
-                    <option value="rapide">Rapide</option>
-                </select>
-                <input type="button" id="precedent" value="precedent">
-                <input class="btn_visio" type="button" id="arreter" value="arreter">
-                <input type="button" id="suivant" value="suivant">
             </section>
         </main>
         <footer></footer>

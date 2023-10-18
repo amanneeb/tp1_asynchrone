@@ -66,7 +66,9 @@ function afficherListeFilms(films){
  */
 function afficherVisionneuse(event){    
     if(event.target.tagName === "BUTTON" && event.target.parentNode.parentNode.tagName === "UL"){
-        document.getElementById("Visionneuse").removeAttribute("hidden")
+        document.getElementById("visionneuse").removeAttribute("hidden");
+        console.log(event.target.innerText)
+        document.querySelector("#visionneuse p").innerText += event.target.innerText;
         idBtnFilmChoisi = parseInt(event.target.id-1);
         intPlaneteAafficher = 0;
         let lienImg = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher];
@@ -109,17 +111,21 @@ function afficherPlanetes(planets){
 function faireDefilerImage(nomPlanete){
     if(refBtnArreterActiver.id==="arreter"){
         arreterMinuterie();
+    }
+    if(nomPlanete.search(" ")!== -1){
+        nomPlanete.replace(" ", "_")
     }    
-    if(refImage.src="../../images/"+nomPlanete+".jpeg"){
+    if("../../images/"+nomPlanete+".jpeg"){
         refImage.src="../../images/"+nomPlanete+".jpeg";
         refLegende.textContent = nomPlanete;
     }else{
-        if(refImage.src="../../images/"+nomPlanete+".jpg"){
+        /*if(refImage.src="../../images/"+nomPlanete+".jpg" !== undefined){
             refImage.src="../../images/"+nomPlanete+".jpg";
             refLegende.textContent = nomPlanete;
-        }else{
-            refImage.src="https://picsum.photos/200";
-        }        
+        }else{*/
+            refImage.src="";
+            refLegende.textContent = nomPlanete;
+        //}        
     }
     if(refBtnArreterActiver.id==="arreter"){
         activerMinuterie();
