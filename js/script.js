@@ -52,14 +52,15 @@ function afficherListeAleatoireUtilisateurs(objJSON){
 function afficherFiche(index){
     document.getElementById("fiche").removeAttribute("hidden");
     document.getElementById("fiche").classList.add("fiche");
-    document.querySelector("#fiche h2").textContent=tabInformation[index-1].name.first + " " + tabInformation[index-1].name.last;
+    //document.querySelector("#fiche h2").textContent=tabInformation[index-1].name.first + " " + tabInformation[index-1].name.last;
     document.querySelector("#fiche img").src = tabInformation[index-1].picture.large;
     document.querySelector("#fiche img").alt = "Afficher la fiche de " +  tabInformation[index-1].name.first;
     let arrLi = document.querySelectorAll("#fiche li");
-    arrLi[0].textContent = tabInformation[index-1].location.street.number + " " + tabInformation[index-1].location.street.name
-    arrLi[1].textContent = tabInformation[index-1].location.city;
-    arrLi[2].textContent = tabInformation[index-1].location.state;
-    arrLi[3].textContent = tabInformation[index-1].location.postcode;
+    arrLi[0].textContent = tabInformation[index-1].name.first + " " + tabInformation[index-1].name.last;
+    arrLi[1].textContent = tabInformation[index-1].location.street.number + " " + tabInformation[index-1].location.street.name
+    arrLi[2].textContent = tabInformation[index-1].location.city;
+    arrLi[3].textContent = tabInformation[index-1].location.state;
+    arrLi[4].textContent = tabInformation[index-1].location.postcode;
 }
 
 /**

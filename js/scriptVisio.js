@@ -4,16 +4,18 @@
  * @version 0.0.1
  *  
  */
-const arrFilmsStarWars = [];
-const arrPlanetesJSON = [];
-const tableauPlanetes =[];
+
+const arrPlanetesFilmsChoisis = [];
+const arrIndexPlanetes = [];
+const arrNomsPlanetes = [];
+const arrBoutons = document.querySelectorAll("#listeFilms button");
+const objPlanetes = {}
 const refImage = document.querySelector("img");
 const refLegende = document.querySelector("figcaption");
 const refBtnArreterActiver = document.querySelector(".btn_visio");
-let idBtnFilmChoisi;
 let intPlaneteAafficher;
+let lienImg;
 let vitesseAffichage;
-let apiImage
 
 
 /**
@@ -22,128 +24,112 @@ let apiImage
 function recupererLesFilms(){
     fetch("https://swapi.dev/api/films/")
     .then(reponse => reponse.json())
-    .then(films => creerTableauFilms(films));
+    .then(films => remplirTableauPlanetes(films));
 }
 
 /**
- * Créer un tableau des films à partir de la liste récupérer sur l'API
+ * Créer un tableau comprenant la liste des planètes pour chaque film
  * @param {object} films 
  */
-function creerTableauFilms(films){
-    films.results.forEach(element => {
-        arrFilmsStarWars.push(element.title);
-    });
-    afficherListeFilms(films);
+function remplirTableauPlanetes(films){
+    const objFilms = films.results;
+    let idApiFilm
+
+   //Entrer les liens API (planetes) dans un tableau 
+    for(let intCpt = 0; intCpt < arrBoutons.length; intCpt++){
+        idApiFilm = arrBoutons[intCpt].getAttribute("name")
+        idListeBtn = arrBoutons[intCpt].id
+        arrPlanetesFilmsChoisis.push(objFilms[idListeBtn].planets)
+    }    
+    recupererLesPlanetes();
 }
 
 /**
- * Afficher trois films parmi les films présents dans la liste
- * @param {object} films 
- */
-function afficherListeFilms(films){
-    objson = films;   
-
-    for(let intCpt=0; intCpt<3; intCpt++){
-        const refUl = document.querySelector("#listeFilms ul");
-        let elementLI = document.createElement("li");
-        let intIndexFilmChoisi = Math.floor((Math.random()* arrFilmsStarWars.length-1) +1);
-        let elementBtn = document.createElement("button");
-        elementBtn.setAttribute("type", "button");
-        elementBtn.setAttribute("id", intCpt+1);
-        elementBtn.textContent =  arrFilmsStarWars[intIndexFilmChoisi];
-       
-        tableauPlanetes.push(objson.results[intIndexFilmChoisi].planets)
-        elementLI.append(elementBtn)
-        arrFilmsStarWars.splice(intIndexFilmChoisi, 1);
-        refUl.append(elementLI);
-    }
-
-}
-
-/**
- * Dévoiler la visionneuse et choisir l'image initiale
- * @param {event} event 
- */
-function afficherVisionneuse(event){    
-    if(event.target.tagName === "BUTTON" && event.target.parentNode.parentNode.tagName === "UL"){
-        document.getElementById("visionneuse").removeAttribute("hidden");
-        console.log(event.target.innerText)
-        document.querySelector("#visionneuse p").innerText += event.target.innerText;
-        idBtnFilmChoisi = parseInt(event.target.id-1);
-        intPlaneteAafficher = 0;
-        let lienImg = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher];
-        let indexPlanetes = lienImg.replace("https://swapi.dev/api/planets/", "");
-        indexPlanetes= indexPlanetes.replace("/", "");
-        apiImage=indexPlanetes;
-        recupererLesPlanetes(indexPlanetes)
-    }
-
-}
-
-/**
- * Récupérer la liste des planètes sur l'API
+ * Recupérer la liste d'index des planetes dont on doit connaitre le nom
  */
 function recupererLesPlanetes(){
-    fetch("https://swapi.dev/api/planets/")
-    .then(reponse => reponse.json())
-    .then(planetes => afficherPlanetes(planetes))
-}
-
-/**
- * Créer un tableau contenant le nom des planètes
- * @param {object} planets 
- */
-function afficherPlanetes(planets){
-    const objPlanetes = planets;
-    if(arrPlanetesJSON.length===0){
-        for(let intP=0; intP<planets.results.length-1; intP++){
-            arrPlanetesJSON.push(planets.results[intP].name.toLowerCase());
+    for(let intCptBis = 0; intCptBis < arrBoutons.length; intCptBis++){ 
+        let indexPlanete;
+        arrPlanetesFilmsChoisis[intCptBis].forEach(element => {
+            if(parseInt(element.charAt(element.length-3))){
+                indexPlanete = element.substr(element.length-3, 2);
+                arrIndexPlanetes.push(indexPlanete);
+            }else{
+                indexPlanete = element.substr(element.length-2, 1);
+                arrIndexPlanetes.push(indexPlanete);
+            }
+        });
+    }
+    
+    for(let intCptElement = 0; intCptElement < arrIndexPlanetes.length-1; intCptElement++){
+        for(let cptPrecedent = 0; cptPrecedent < intCptElement; cptPrecedent++){
+            if(intCptElement >= 1){
+                if(arrIndexPlanetes[intCptElement] === arrIndexPlanetes[cptPrecedent]){
+                    arrIndexPlanetes.splice(intCptElement, 1);
+                }
+            }
         }
-    }
-    let nomPlanete = objPlanetes.results[apiImage-1]["name"].toLowerCase();
-    faireDefilerImage(nomPlanete)
+    }   
+    recupererNomsPlanetes() 
 }
 
 /**
- * Afficher les images des planètes dans la visionneuse
- * @param {string} nomPlanete 
+ * Récupérer le nom des planetes grâce à l'API
  */
-function faireDefilerImage(nomPlanete){
-    if(refBtnArreterActiver.id==="arreter"){
-        arreterMinuterie();
+function recupererNomsPlanetes(){
+    for(let cpt = 0; cpt <= arrIndexPlanetes.length-1; cpt++){
+        fetch("https://swapi.dev/api/planets/"+arrIndexPlanetes[cpt])
+        .then(reponse => reponse.json())
+        .then(function(json){
+            objPlanetes[arrIndexPlanetes[cpt]]=json.name;
+        })
     }
-    if(nomPlanete.search(" ")!== -1){
-        nomPlanete.replace(" ", "_")
-    }    
-    if("../../images/"+nomPlanete+".jpeg"){
-        refImage.src="../../images/"+nomPlanete+".jpeg";
-        refLegende.textContent = nomPlanete;
-    }else{
-        /*if(refImage.src="../../images/"+nomPlanete+".jpg" !== undefined){
-            refImage.src="../../images/"+nomPlanete+".jpg";
-            refLegende.textContent = nomPlanete;
-        }else{*/
-            refImage.src="";
-            refLegende.textContent = nomPlanete;
-        //}        
-    }
-    if(refBtnArreterActiver.id==="arreter"){
+}
+
+/**
+ * Faire apparaitre une image dans la visionneuse
+ * @param {event} event
+ */
+function afficherVisionneuse(event){
+    if(event.target.tagName === "BUTTON" && event.target.parentNode.parentNode.tagName === "UL"){
+        //Afficher dévoiler visionneuse et afficher nom du film choisi
+        document.getElementById("visionneuse").removeAttribute("hidden");
+        document.querySelector("#visionneuse span").textContent = "";
+        document.querySelector("#visionneuse span").textContent = event.target.innerText;
+
+        //Afficher l'image
+        idBtnFilmChoisi = parseInt(event.target.getAttribute("name"));
+        intPlaneteAafficher = 0;
+        lienImg = arrPlanetesFilmsChoisis[idBtnFilmChoisi][0];
+        image = extraireIndexPlanete(lienImg)
+        let imageAAfficher = objPlanetes[image].toLowerCase();
+
+        if(imageAAfficher.indexOf(" ") === -1){
+            refImage.src="../../images/"+imageAAfficher+".jpeg";
+            refImage.alt=imageAAfficher;
+            refLegende.textContent = imageAAfficher;
+        }else{
+            imageAAfficher.replace(" ", "_");
+            refImage.src="../../images/"+imageAAfficher+".jpeg";
+            refImage.alt=imageAAfficher;
+            refLegende.textContent = imageAAfficher;
+        }
         activerMinuterie();
-    }    
+    }
 }
 
 /**
  * Faire apparaitre l'image suivante dans la visionneuse
  */
 function avancerVisionneuse(){
-    if(intPlaneteAafficher<tableauPlanetes[idBtnFilmChoisi].length-1){
+    if(intPlaneteAafficher<arrPlanetesFilmsChoisis[idBtnFilmChoisi].length-1){
         intPlaneteAafficher++;
-        planete = extraireIndexPlanete()
+        planete = extraireIndexPlanete(arrPlanetesFilmsChoisis[idBtnFilmChoisi][intPlaneteAafficher])
         faireDefilerImage(planete);
     }else{
-        if(intPlaneteAafficher===tableauPlanetes[idBtnFilmChoisi].length-1){
+        if(intPlaneteAafficher===arrPlanetesFilmsChoisis[idBtnFilmChoisi].length-1){
             intPlaneteAafficher=0;
-            planete = extraireIndexPlanete();
+            planete = extraireIndexPlanete(arrPlanetesFilmsChoisis[idBtnFilmChoisi][intPlaneteAafficher]);
             faireDefilerImage(planete);
         }
     }    
@@ -155,26 +141,49 @@ function avancerVisionneuse(){
 function reculerVisionneuse(){
     if(intPlaneteAafficher>0){
         intPlaneteAafficher--;
-        planete = extraireIndexPlanete();
+        planete = extraireIndexPlanete(arrPlanetesFilmsChoisis[idBtnFilmChoisi][intPlaneteAafficher])
         faireDefilerImage(planete);
     }else{
         if(intPlaneteAafficher===0){
-            intPlaneteAafficher=tableauPlanetes[idBtnFilmChoisi].length-1;
-            planete = extraireIndexPlanete();
+            intPlaneteAafficher=arrPlanetesFilmsChoisis[idBtnFilmChoisi].length-1;
+            planete = extraireIndexPlanete(arrPlanetesFilmsChoisis[idBtnFilmChoisi][intPlaneteAafficher])
             faireDefilerImage(planete);
         }
     }
 }
 
 /**
+ * Afficher les images des planètes dans la visionneuse
+ * @param {string} nomPlanete 
+ */
+function faireDefilerImage(nomPlanete){
+    if(refBtnArreterActiver.id==="arreter"){
+        arreterMinuterie();
+    }
+    refImage.src="../../images/"+ objPlanetes[nomPlanete]+".jpeg";
+    refImage.alt=objPlanetes[nomPlanete];
+    refLegende.textContent = objPlanetes[nomPlanete];
+    if(refBtnArreterActiver.id==="arreter"){
+        activerMinuterie();
+    } 
+}
+
+
+/* FONCTIONS UTILITAIRES */
+
+/**
  * Extraire l'index de la planete grâce à son URL
  * @returns 
  */
-function extraireIndexPlanete(){
-    noDeLaPlanete = tableauPlanetes[idBtnFilmChoisi][intPlaneteAafficher].replace("https://swapi.dev/api/planets/", "");
-    noDeLaPlanete = noDeLaPlanete.replace("/", "");
-    planete = arrPlanetesJSON[noDeLaPlanete-1];
-    return planete;
+function extraireIndexPlanete(apiImage){
+    lienImg = apiImage;
+    if(parseInt(lienImg.charAt(lienImg.length-3))){
+        apiImage = lienImg.substr(lienImg.length-3, 2);
+    }else{
+        apiImage = lienImg.substr(lienImg.length-2, 1);
+    }
+    
+    return apiImage;
 }
 
 /**
@@ -219,6 +228,7 @@ function changerValeursBtnVisio(){
         refBtnArreterActiver.id="activer";
         arreterMinuterie();
     }else{
+        arreterMinuterie();
         refBtnArreterActiver.value="arreter";
         refBtnArreterActiver.id="arreter";
         activerMinuterie();
@@ -226,10 +236,10 @@ function changerValeursBtnVisio(){
 }
 
 
+
 window.addEventListener("load", recupererLesFilms);
 window.addEventListener("click", afficherVisionneuse);
-refBtnArreterActiver.addEventListener("click", changerValeursBtnVisio);
 document.getElementById("suivant").addEventListener("click", avancerVisionneuse);
 document.getElementById("precedent").addEventListener("click", reculerVisionneuse);
 document.getElementById("arreter").addEventListener("click", arreterMinuterie);
-
+refBtnArreterActiver.addEventListener("click", changerValeursBtnVisio);

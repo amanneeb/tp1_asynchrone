@@ -1,10 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+html{
+    height: 100%;
+    width: 100%;
+    font-family: "Poppins", "sans-serif";
+}
 /* LISTE UTILISATEURS */
-h1{
-    font-family: Arial, Helvetica, sans-serif;
+.bodyListe{
+    font-family: "Raleway", sans-serif;
+    margin: 0 0;
+}
+.mainListe{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.bodyListe h1{
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    color: rgb(65, 6, 89);
+    color: white;
+    background: rgb(23, 23, 62);
+    margin: 0 0 1.5em 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 #liste ul {
@@ -46,10 +68,17 @@ h1{
     cursor: pointer;
     border-radius: 8px;
     overflow: hidden;
+    border: solid rgb(23, 23, 62) 1px;
 }
 
-#liste button:hover img,
-#liste button:focus img {
+#liste button:focus{
+    border: solid rgb(23, 23, 62) 5px;
+}
+#liste button:focus img{
+    opacity: .3;
+}
+
+#liste button:hover img {
     opacity: 0.6;
 }
 
@@ -61,14 +90,16 @@ h1{
 }
 
 .fiche {
-    margin-top: 60px;
-    padding-top: 40px;
+    margin: 60px auto;
+    padding: 40px 0;
     border-top: 1px solid rgb(215, 215, 215);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    border: rgb(23, 23, 62) solid 7px;
+    
 }
 @media (min-width: 600px){
     .fiche {
@@ -76,6 +107,12 @@ h1{
         justify-content: center;
         align-items: flex-start;
         flex-wrap: wrap;
+        width: 90vw;
+    }
+}
+@media (min-width: 800px){
+    .fiche {
+        width: 70vw;
     }
 }
 
@@ -85,7 +122,8 @@ h1{
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
-    color: rgb(65, 6, 89);
+    color: rgb(23, 23, 62);
+    padding-bottom: 1em;
 }
 @media (min-width: 600px){
     #fiche h2 {
@@ -104,18 +142,47 @@ h1{
         flex: 0 1 45%;
     }
 }
+#fiche ul{
+    list-style-type: none;
+}
 @media (min-width: 600px){
     #fiche ul {
         flex: 0 1 45%;
     }
 }
 
+#fiche ul li:nth-child(1){
+    font-size: 1.3em;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: rgb(23, 23, 62);
+    margin-bottom: 10px;
+}
+
 /* VISIONNEUSE */
+.bodyVisio{
+    background-image: url("../images/star_wars.svg");
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
+    max-height: 100%;
+    max-width: 100%;
+
+}
+
 .main{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    font-family: "Poppins", "sans-serif";
+}
+h1{
+    font-family: "Audiowide";
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    color: black;
 }
 #listeFilms ul{
     list-style-type: none;
@@ -130,13 +197,26 @@ h1{
 #listeFilms li{
     margin: 0 5px;
 }
-#listeFilms button{
+.bodyVisio button{
+    font-weight: bold;
+}
+#listeFilms ul button{
     border: none;
     padding: 1em 1em;
     background-color: black;
     color: white;
     border-radius: 5px;
 }
+#listeFilms ul button:hover{
+    background-color: grey;
+}
+#listeFilms ul button:active{
+    background-color: white;
+    border: solid black 4px;
+    color: black;
+}
+
+
 
 .visionneuse{
     display: flex;
@@ -162,11 +242,27 @@ h1{
     border-radius: 5px;
     border: solid 1px black;
 }
+#visionneuse div input{
+    color: black;
+    border-radius: 5px;
+    border: solid 1px black;
+}
+#visionneuse div input:hover{
+    outline: solid 2px black;
+}
+#visionneuse div input:active{
+    background: black;
+    color: white;
+}
+
+
 #visionneuse figure{
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     max-width: 100%;
+    border: solid black 5px;
 }
 @media (min-width: 600px) {
     #visionneuse figure{
@@ -176,13 +272,26 @@ h1{
 #visionneuse img{
     display: block;
     max-width: 100%;
+   
+    background-color: black;
+}
+@media (min-width: 600px) {
+    #visionneuse img{
+        width: 600px;
+        height: 400px;
+    }
 }
 #visionneuse figcaption{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
     display: block;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Poppins", sans-serif;
+    font-family: "Audiowide";
     text-transform: uppercase;
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
     font-size: 1.2em;
 }

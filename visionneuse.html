@@ -6,33 +6,33 @@
         <link rel="stylesheet" href="styles/main.css">
         <script src="js/scriptVisio.js" defer></script>
     </head>
-    <body>
+    <body class="bodyVisio">
         <header>
             <h1>Visionneuse</h1>
         </header>
         <main class="main">
             <section id="listeFilms">
-                <p><i>*Dans quelques secondes, trois films vont apparaitre.</i></p>
-                <ul>
-
-                </ul>
+                    <ul>
+                        <li><button name="0" id="3">The Phantom Menace</button></li>
+                        <li><button name="1" id="4">Attack of the Clones</button></li>
+                        <li><button name="2" id="0">A New Hope</button></li>
+                    </ul>
 
             </section>
             <section id="visionneuse" hidden>
-                <p>Film choisi: </p>
+                <p>Film choisi: <span></span></p>
                 <div>
                     <select id="vitesse">
                         <option value="lent">Lent</option>
                         <option value="moyen">Moyen</option>
                         <option value="rapide">Rapide</option>
-                    </select>
-                    <input type="button" id="precedent" value="precedent">
+                    </select><br>
+                    <input type="button" id="precedent" value="&#9664;&#9664;">
                     <input class="btn_visio" type="button" id="arreter" value="arreter">
-                    <input type="button" id="suivant" value="suivant">
+                    <input type="button" id="suivant" value="&#9654;&#9654;">
                 </div>
-                
                 <figure>
-                    <img src="" alt="" >
+                    <img src="" alt="" width="600px">
                     <figcaption></figcaption>
                 </figure>
             </section>
